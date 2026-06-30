@@ -1,1 +1,24 @@
-<!doctype html><meta charset=utf-8><title>OAuth callback</title><h1>Authorized</h1><p>Copy the full URL from the address bar (it contains <code>?code=...</code>) and paste it back to RouteCast setup.</p>
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RouteCast — Authorized</title>
+<style>body{font-family:system-ui,sans-serif;max-width:34rem;margin:3rem auto;padding:0 1rem;line-height:1.5}a.btn{display:inline-block;margin-top:1rem;padding:.8rem 1.2rem;background:#cc0000;color:#fff;border-radius:.5rem;text-decoration:none;font-weight:600}</style>
+<h1>Authorized ✓</h1>
+<p>Returning you to RouteCast…</p>
+<p id="fallback" style="display:none">If the app didn't reopen, tap the button:</p>
+<a id="open" class="btn" style="display:none">Open RouteCast</a>
+<script>
+  var p = new URLSearchParams(location.search);
+  var code = p.get('code'), state = p.get('state') || '';
+  if (code) {
+    var deep = 'routecast://auth?code=' + encodeURIComponent(code) + '&state=' + encodeURIComponent(state);
+    document.getElementById('open').href = deep;
+    location.replace(deep);
+    setTimeout(function(){
+      document.getElementById('fallback').style.display='block';
+      document.getElementById('open').style.display='inline-block';
+    }, 1200);
+  } else {
+    document.body.innerHTML = '<h1>Missing code</h1><p>No authorization code was returned. Please retry sign-in from the app.</p>';
+  }
+</script>
